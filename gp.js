@@ -21,18 +21,17 @@
 
     function initMyBookmarklet() {
         (window.myBookmarklet = function() {
-            NzzWebpaper();
+            NzzWebpaper.init();
         })();
     }
 
-    function NzzWebpaper() {
-        var path = document.location.pathname;
-        var gbUrl = document.location.origin + "/guestpassUrl" + path;
-        jQuery.get(gbUrl, NzzWebpaperFetchSuccess);
 
-    }
 
-    function NzzWebpaperFetchSuccess(data) {
+})();
+
+var NzzWebpaper = (function() {
+    var my = {};
+    function fetchSuccess(data) {
         jQuery("#socialShare").after("<div id='rlt'> </div>");
         jQuery("#rlt").append("<p ><a href='" + data + "'>" + data + "</a></p>");
         jQuery("#rlt").append("<p><a href='" + 'http://liip.to/?url='+encodeURIComponent(data) + "'>liip.to</a></p>");
@@ -45,5 +44,10 @@
         document.location.hash="rlt";
 
     }
-
-})();
+    my.init = function() {
+        var path = document.location.pathname;
+        var gbUrl = document.location.origin + "/guestpassUrl" + path;
+        jQuery.get(gbUrl, fetchSuccess);
+    }
+    return my;
+}());
