@@ -21,7 +21,13 @@
 
     function initMyBookmarklet() {
         (window.myBookmarklet = function() {
-            NzzWebpaper.init();
+            switch (document.location.host) {
+                case 'webpaper.nzz.ch':
+                    NzzWebpaper.init();
+                    break;
+                default:
+                    alert("No handler for " + document.location.host);
+            }
         })();
     }
 
